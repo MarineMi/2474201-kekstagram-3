@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Марина Васюкова](https://up.htmlacademy.ru/javascript-individual/3/user/2474201).
-* Наставник: `Неизвестно`.
+* Наставник: [Алексей Хапов](https://htmlacademy.ru/profile/id118459).
 
 ---
 
