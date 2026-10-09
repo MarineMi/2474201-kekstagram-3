@@ -19,11 +19,13 @@ const isPalindrome = (text) => {
   return normalizedText === reversedText;
 };
 
-/* const isPalindrome = (text) => {
+/*
+  const isPalindrome = (text) => {
   const normalizedText = text.replaceAll(' ', '').toLowerCase();
   const reversedText = normalizedText.split('').reverse().join('');
   return normalizedText === reversedText;
-  }; */
+  };
+*/
 
 isPalindrome('топот'); // true
 isPalindrome('ДовОд'); // true
@@ -33,9 +35,7 @@ isPalindrome('Лёша на полке клопа нашёл '); // true
 // Функция принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа. Если в строке нет ни одной цифры, функция должна вернуть NaN:
 
 const getNumberFromString = (text) => {
-  if (typeof text === 'number') {
-    text = text.toString();
-  }
+  text = text.toString();
 
   let result = '';
   for (let i = 0; i < text.length; i++) {
