@@ -13,7 +13,7 @@ const isPalindrome = (text) => {
 
   let reversedText = '';
   for (let i = normalizedText.length - 1; i >= 0; i--) {
-    reversedText += normalizedText[i];
+    reversedText += normalizedText[ i ];
   }
 
   return normalizedText === reversedText;
@@ -39,8 +39,8 @@ const getNumberFromString = (text) => {
 
   let result = '';
   for (let i = 0; i < text.length; i++) {
-    if (!Number.isNaN(parseInt(text[i], 10))) {
-      result += text[i];
+    if (!Number.isNaN(parseInt(text[ i ], 10))) {
+      result += text[ i ];
     }
   }
 
@@ -55,3 +55,32 @@ getNumberFromString('а я томат'); // NaN
 getNumberFromString(2023); // 2023
 getNumberFromString(-1); // 1
 getNumberFromString(1.5); // 15
+
+
+/*
+Функция проверяет, что встреча не выходит за рамки рабочего дня
+'8:00' - начало рабочего дня
+'17:30' - конец рабочего дня
+'14:00' - начало встречи
+90 - продолжительность встречи в минутах
+*/
+
+const checkTime = (dayStart, dayEnd, meetingStart, meetingDuration) => {
+  const timeToHours = function (time) {
+    const [ hours, minutes ] = time.split(':').map((item) => parseInt(item, 10));
+    return hours + minutes / 60;
+  };
+
+  const dayStartHours = timeToHours(dayStart);
+  const dayEndHours = timeToHours(dayEnd);
+  const meetingStartHours = timeToHours(meetingStart);
+  const meetingEndHours = meetingStartHours + meetingDuration / 60;
+
+  return dayStartHours <= meetingStartHours && meetingEndHours <= dayEndHours;
+};
+
+checkTime('08:00', '17:30', '14:00', 90); // true
+checkTime('8:0', '10:0', '8:0', 120); // true
+checkTime('08:00', '14:30', '14:00', 90); // false
+checkTime('14:00', '17:30', '08:0', 90); // false
+checkTime('8:00', '17:30', '08:00', 900); // false
