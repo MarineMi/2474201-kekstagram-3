@@ -1,8 +1,7 @@
-const PHOTO_COUNT = 25;
-const LIKE_COUNT_MIN = 15;
-const LIKE_COUNT_MAX = 200;
-const AVATAR_COUNT_MAX = 6;
-const COMMENT_COUNT = 30;
+const PHOTO_COUNT = { MIN: 1, MAX: 25 };
+const LIKE_COUNT = { MIN: 15, MAX: 200 };
+const AVATAR_COUNT = { MIN: 1, MAX: 6 };
+const COMMENT_COUNT = { MIN: 0, MAX: 30 };
 
 const DESCRIPTIONS = [
   'Солнечная тропинка в лесу',
@@ -40,56 +39,55 @@ const NAMES = [
   'Сергей',
 ];
 
-const getRandomInteger = (a, b) => {
+const getRandomInteger = function (a, b) {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
   const result = Math.random() * (upper - lower + 1) + lower;
   return Math.floor(result);
 };
 
-function createRandomIdFromRangeGenerator(min, max) {
-  const previousValues = [];
+const createId = function () {
+  let previousValues = 1;
 
   return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
+    return previousValues++;
   };
-}
+};
 
-const generatePhotoId = createRandomIdFromRangeGenerator(1, PHOTO_COUNT);
 
-const generateCommentId = createRandomIdFromRangeGenerator(1, COMMENT_COUNT);
+const generatePhotoId = createId();
 
-const getRandomArrayElement = (elements, count = 1) => {
+const generateCommentId = createId();
+
+const getRandomArrayElement = function (elements, count = 1) {
   let randomElements = '';
+
   for (let i = 0; i < count; i++) {
     randomElements += `${elements[ getRandomInteger(0, elements.length - 1) ]} `;
   }
+
   return randomElements.trimEnd();
 };
 
-const createComment = (id) => ({
-  id,
-  avatar: `img/avatar${getRandomInteger(1, AVATAR_COUNT_MAX)}.svg`,
-  message: getRandomArrayElement(MESSAGES, getRandomInteger(1, 2)),
-  name: getRandomArrayElement(NAMES),
-});
+const createComment = function (id) {
+  return {
+    id,
+    avatar: `img/avatar-${getRandomInteger(AVATAR_COUNT.MIN, AVATAR_COUNT.MAX)}.svg`,
+    message: getRandomArrayElement(MESSAGES, getRandomInteger(1, 2)),
+    name: getRandomArrayElement(NAMES),
+  };
+};
 
-const createPhoto = (id) => ({
-  id,
-  url: `photos/${id}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(LIKE_COUNT_MIN, LIKE_COUNT_MAX),
-  comments: Array.from({ length: getRandomInteger(0, COMMENT_COUNT) }, () => createComment(generateCommentId()))
-});
+const createPhoto = function (id) {
+  return {
+    id,
+    url: `photos/${id}.jpg`,
+    description: getRandomArrayElement(DESCRIPTIONS),
+    likes: getRandomInteger(LIKE_COUNT.MIN, LIKE_COUNT.MAX),
+    comments: Array.from({ length: getRandomInteger(COMMENT_COUNT.MIN, COMMENT_COUNT.MAX) }, () => createComment(generateCommentId()))
+  };
+};
 
-const photos = Array.from({ length: PHOTO_COUNT }, () => createPhoto(generatePhotoId()));
+const photos = Array.from({ length: PHOTO_COUNT.MAX }, () => createPhoto(generatePhotoId()));
 
 window.console.log(photos);
