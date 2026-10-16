@@ -1,3 +1,3 @@
-import { getPhotos } from './photos.js';
+import { renderPhotoThumbnailList } from './photoThumbnails.js';
 
-window.console.log(getPhotos());
+renderPhotoThumbnailList();

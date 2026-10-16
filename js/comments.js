@@ -6,7 +6,7 @@ import {
 } from './data.js';
 import { getRandomInteger, createId, getRandomArrayElement } from './utils.js';
 
-const generateCommentId = createId();
+const createCommentId = createId();
 
 const createComment = function (id) {
   return {
@@ -17,8 +17,8 @@ const createComment = function (id) {
   };
 };
 
-const getComments = function () {
-  return Array.from({ length: getRandomInteger(COMMENT_COUNT.MIN, COMMENT_COUNT.MAX) }, () => createComment(generateCommentId()));
+const createComments = function () {
+  return Array.from({ length: getRandomInteger(COMMENT_COUNT.MIN, COMMENT_COUNT.MAX) }, () => createComment(createCommentId()));
 };
 
-export { getComments };
+export { createComments };
