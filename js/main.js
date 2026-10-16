@@ -1,1 +1,3 @@
-import './photoThumbnails.js';
+import { renderPhotoThumbnailList } from './photoThumbnails.js';
+
+renderPhotoThumbnailList();

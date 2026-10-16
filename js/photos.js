@@ -4,9 +4,9 @@ import {
   DESCRIPTIONS,
 } from './data.js';
 import { getRandomInteger, createId, getRandomArrayElement } from './utils.js';
-import { getComments } from './comments.js';
+import { createComments } from './comments.js';
 
-const generatePhotoId = createId();
+const createPhotoId = createId();
 
 const createPhoto = function (id) {
   return {
@@ -14,12 +14,12 @@ const createPhoto = function (id) {
     url: `photos/${id}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(LIKE_COUNT.MIN, LIKE_COUNT.MAX),
-    comments: getComments()
+    comments: createComments()
   };
 };
 
-const getPhotos = function () {
-  return Array.from({ length: PHOTO_COUNT.MAX }, () => createPhoto(generatePhotoId()));
+const createPhotos = function () {
+  return Array.from({ length: PHOTO_COUNT.MAX }, () => createPhoto(createPhotoId()));
 };
 
-export { getPhotos };
+export { createPhotos };

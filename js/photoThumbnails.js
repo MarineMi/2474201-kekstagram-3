@@ -1,4 +1,4 @@
-import { getPhotos } from './photos.js';
+import { createPhotos } from './photos.js';
 
 /*
 На основе временных данных для разработки и шаблона #picture создайте DOM-элементы, соответствующие фотографиям, и заполните их данными:
@@ -12,24 +12,28 @@ import { getPhotos } from './photos.js';
 Подключите модуль в проект.
 */
 
+const photos = createPhotos();
+const photoThumbnailList = document.querySelector('.pictures');
 const photoThumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const photoThumbnailList = document.querySelector('.pictures');
-const photos = getPhotos();
-const fragment = document.createDocumentFragment();
+const renderPhotoThumbnailList = () => {
+  const fragment = document.createDocumentFragment();
 
-photos.forEach(({ url, description, likes, comments }) => {
-  const photoThumbnailElement = photoThumbnailTemplate.cloneNode(true);
+  photos.forEach(({ url, description, likes, comments }) => {
+    const photoThumbnailElement = photoThumbnailTemplate.cloneNode(true);
 
-  const photoThumbnailElementImg = photoThumbnailElement.querySelector('.picture__img');
-  photoThumbnailElementImg.src = url;
-  photoThumbnailElementImg.alt = description;
-  photoThumbnailElement.querySelector('.picture__comments').textContent = comments.length;
-  photoThumbnailElement.querySelector('.picture__likes').textContent = likes;
+    const photoThumbnailElementImg = photoThumbnailElement.querySelector('.picture__img');
+    photoThumbnailElementImg.src = url;
+    photoThumbnailElementImg.alt = description;
+    photoThumbnailElement.querySelector('.picture__comments').textContent = comments.length;
+    photoThumbnailElement.querySelector('.picture__likes').textContent = likes;
 
-  fragment.append(photoThumbnailElement);
-});
+    fragment.append(photoThumbnailElement);
+  });
 
-photoThumbnailList.append(fragment);
+  photoThumbnailList.append(fragment);
+};
+
+export { renderPhotoThumbnailList };
