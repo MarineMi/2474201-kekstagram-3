@@ -1,3 +1,8 @@
+import { createPhotos } from './photos.js';
 import { renderPhotoThumbnailList } from './photoThumbnails.js';
+import './photoFull.js';
 
-renderPhotoThumbnailList();
+
+const photos = createPhotos();
+
+renderPhotoThumbnailList(photos);
