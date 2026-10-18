@@ -1,39 +1,31 @@
-import { createPhotos } from './photos.js';
+import { onPhotoThumbnailClick } from './photoFull.js';
 
-/*
-На основе временных данных для разработки и шаблона #picture создайте DOM-элементы, соответствующие фотографиям, и заполните их данными:
 
-Адрес изображения url подставьте как атрибут src изображения.
-Описание изображения description подставьте в атрибут alt изображения.
-Количество лайков likes выведите в блок .picture__likes.
-Количество комментариев comments выведите в блок .picture__comments.
-Отрисуйте сгенерированные DOM-элементы в блок .pictures. Для вставки элементов используйте DocumentFragment.
-
-Подключите модуль в проект.
-*/
-
-const photos = createPhotos();
-const photoThumbnailList = document.querySelector('.pictures');
+const photoThumbnailContainerElement = document.querySelector('.pictures');
 const photoThumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const renderPhotoThumbnailList = () => {
+
+const renderPhotoThumbnailList = function (photos) {
   const fragment = document.createDocumentFragment();
 
-  photos.forEach(({ url, description, likes, comments }) => {
+  photos.forEach((photo) => {
+    const { url, description, likes, comments } = photo;
     const photoThumbnailElement = photoThumbnailTemplate.cloneNode(true);
-
-    const photoThumbnailElementImg = photoThumbnailElement.querySelector('.picture__img');
-    photoThumbnailElementImg.src = url;
-    photoThumbnailElementImg.alt = description;
+    const photoThumbnailImgElement = photoThumbnailElement.querySelector('.picture__img');
+    photoThumbnailImgElement.src = url;
+    photoThumbnailImgElement.alt = description;
     photoThumbnailElement.querySelector('.picture__comments').textContent = comments.length;
     photoThumbnailElement.querySelector('.picture__likes').textContent = likes;
+
+    photoThumbnailElement.addEventListener('click', (evt) => onPhotoThumbnailClick(evt, photo));
 
     fragment.append(photoThumbnailElement);
   });
 
-  photoThumbnailList.append(fragment);
+  photoThumbnailContainerElement.append(fragment);
 };
+
 
 export { renderPhotoThumbnailList };
