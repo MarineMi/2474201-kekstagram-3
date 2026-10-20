@@ -5,6 +5,7 @@ const getRandomInteger = function (a, b) {
   return Math.floor(result);
 };
 
+
 const createId = function () {
   let previousValues = 1;
 
@@ -13,13 +14,13 @@ const createId = function () {
   };
 };
 
+
 const getRandomArrayElement = function (elements, count = 1) {
   let randomElements = '';
 
   for (let i = 0; i < count; i++) {
     randomElements += `${elements[ getRandomInteger(0, elements.length - 1) ]} `;
   }
-
   return randomElements.trimEnd();
 };
 

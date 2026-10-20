@@ -1,8 +1,9 @@
-const COMMENT_SHOWN_COUNT = 5;
+import { renderComments, loadMoreComments, COMMENT_SHOWN_STEP } from './commentsRender.js';
+
+
+let lastFocusedElement = null;
 const photoFullPopupElement = document.querySelector('.big-picture');
 const photoFullCloseElement = photoFullPopupElement.querySelector('.big-picture__cancel');
-const commentsListElement = photoFullPopupElement.querySelector('.social__comments');
-const commentTemplateElement = photoFullPopupElement.querySelector('.social__comment');
 
 
 const renderPhotoFull = function ({ url, description, likes, comments }) {
@@ -11,43 +12,22 @@ const renderPhotoFull = function ({ url, description, likes, comments }) {
   photoFullPopupImgElement.alt = description;
   photoFullPopupElement.querySelector('.likes-count').textContent = likes;
   photoFullPopupElement.querySelector('.social__comment-total-count').textContent = comments.length;
-  photoFullPopupElement.querySelector('.social__comment-shown-count').textContent = Math.min(COMMENT_SHOWN_COUNT, comments.length);
+  photoFullPopupElement.querySelector('.social__comment-shown-count').textContent = Math.min(COMMENT_SHOWN_STEP, comments.length);
   photoFullPopupElement.querySelector('.social__caption').textContent = description;
 };
 
 
-const renderComments = function (comments) {
-  const fragment = document.createDocumentFragment();
-
-  comments.forEach((comment) => {
-    const { avatar, name, message } = comment;
-    const commentElement = commentTemplateElement.cloneNode(true);
-    const commentImgElement = commentElement.querySelector('.social__picture');
-    commentImgElement.src = avatar;
-    commentImgElement.alt = name;
-    commentElement.querySelector('.social__text').textContent = message;
-    fragment.appendChild(commentElement);
-  });
-
-  commentsListElement.innerHTML = '';
-  commentsListElement.appendChild(fragment);
-};
-
-
-let lastFocusedElement = null;
-
 const onPhotoThumbnailClick = function (evt, photo) {
   evt.preventDefault();
   const { url, description, likes, comments } = photo;
+
   renderPhotoFull({ url, description, likes, comments });
-  renderComments(comments);
+  renderComments(comments.slice(0, Math.min(COMMENT_SHOWN_STEP, comments.length)));
+  loadMoreComments(comments);
   photoFullPopupElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   photoFullCloseElement.focus();
   lastFocusedElement = evt.currentTarget;
-
-  photoFullPopupElement.querySelector('.social__comment-count').classList.add('hidden');
-  photoFullPopupElement.querySelector('.comments-loader').classList.add('hidden');
 };
 
 
