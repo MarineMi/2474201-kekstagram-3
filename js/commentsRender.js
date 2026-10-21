@@ -1,38 +1,48 @@
 const COMMENT_SHOWN_STEP = 5;
+let commentsShowCount = COMMENT_SHOWN_STEP;
+let commentsCopy = [];
 const photoFullPopupElement = document.querySelector('.big-picture');
 const commentsListElement = photoFullPopupElement.querySelector('.social__comments');
 const commentTemplateElement = photoFullPopupElement.querySelector('.social__comment');
+const commentTotalCountElement = photoFullPopupElement.querySelector('.social__comment-total-count');
+const commentShowCountElement = photoFullPopupElement.querySelector('.social__comment-shown-count');
 const commentsLoadMoreButtonElement = photoFullPopupElement.querySelector('.comments-loader');
 
 
-const renderComments = function (comments) {
+const renderComment = function ({ avatar, name, message }) {
+  const commentElement = commentTemplateElement.cloneNode(true);
+  const commentImgElement = commentElement.querySelector('.social__picture');
+  commentImgElement.src = avatar;
+  commentImgElement.alt = name;
+  commentElement.querySelector('.social__text').textContent = message;
+  return commentElement;
+};
+
+
+const renderComments = function (comments, reset = false) {
+  if (reset) {
+    commentsShowCount = COMMENT_SHOWN_STEP;
+    commentsCopy = comments.slice();
+  }
+
+  commentTotalCountElement.textContent = commentsCopy.length;
+  commentShowCountElement.textContent = Math.min(commentsShowCount, commentsCopy.length);
+
   const fragment = document.createDocumentFragment();
-
-  comments.forEach((comment) => {
-    const { avatar, name, message } = comment;
-    const commentElement = commentTemplateElement.cloneNode(true);
-    const commentImgElement = commentElement.querySelector('.social__picture');
-    commentImgElement.src = avatar;
-    commentImgElement.alt = name;
-    commentElement.querySelector('.social__text').textContent = message;
-    fragment.appendChild(commentElement);
-  });
-
+  commentsCopy.slice(0, commentsShowCount).forEach((comment) => fragment.appendChild(renderComment(comment)));
   commentsListElement.innerHTML = '';
   commentsListElement.appendChild(fragment);
+
+  commentsLoadMoreButtonElement.classList.toggle('hidden', commentsShowCount >= commentsCopy.length);
 };
 
 
-const loadMoreComments = function (comments) {
-  let commentsShowCount = COMMENT_SHOWN_STEP;
+commentsLoadMoreButtonElement.addEventListener('click', () => {
+  commentsShowCount += COMMENT_SHOWN_STEP;
+  renderComments(commentsCopy, false);
+});
 
-  commentsLoadMoreButtonElement.addEventListener('click', () => {
-    commentsShowCount += COMMENT_SHOWN_STEP;
-    const commentsSlice = comments.slice(0, Math.min(commentsShowCount, comments.length));
-    photoFullPopupElement.querySelector('.social__comment-shown-count').textContent = Math.min(commentsShowCount, comments.length);
-    renderComments(commentsSlice);
-  });
+
+export {
+  renderComments
 };
-
-
-export { renderComments, loadMoreComments, COMMENT_SHOWN_STEP };
