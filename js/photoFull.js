@@ -10,14 +10,14 @@ const photoFullCloseElement = photoFullPopupElement.querySelector('.big-picture_
 const openPopup = function () {
   photoFullPopupElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onPhotoFullEscape);
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 
 const closePopup = function () {
   photoFullPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onPhotoFullEscape);
+  document.removeEventListener('keydown', onDocumentKeydown);
 
   if (lastFocusedElement) {
     lastFocusedElement.focus();
@@ -25,15 +25,13 @@ const closePopup = function () {
   }
 };
 
-function onPhotoFullEscape(evt) {
+
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closePopup();
   }
 }
-
-
-photoFullCloseElement.addEventListener('click', closePopup);
 
 
 const renderPhotoFull = function ({ url, description, likes }) {
@@ -47,12 +45,16 @@ const renderPhotoFull = function ({ url, description, likes }) {
 
 const onPhotoThumbnailClick = function (evt, photo) {
   evt.preventDefault();
+  const { comments } = photo;
   lastFocusedElement = evt.currentTarget;
   renderPhotoFull(photo);
-  renderComments(photo.comments, true);
+  renderComments(comments, true);
   openPopup();
   photoFullCloseElement.focus();
 };
+
+
+photoFullCloseElement.addEventListener('click', closePopup);
 
 
 export { onPhotoThumbnailClick };
