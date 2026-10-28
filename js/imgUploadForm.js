@@ -1,5 +1,7 @@
 import { isEscapeKey } from './utils.js';
 import { isValid, resetValidation } from './imgUploadValidation.js';
+import { resetScale } from './imgUploadScale.js';
+import { resetFilter } from './imgUploadEffects.js';
 
 
 const uploadFormElement = document.querySelector('.img-upload__form');
@@ -25,6 +27,8 @@ const closePopup = function () {
   uploadFormHashtagsElement.value = '';
   uploadFormDescriptionElement.value = '';
   resetValidation();
+  resetScale();
+  resetFilter();
 };
 
 
