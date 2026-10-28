@@ -40,7 +40,7 @@ function onDocumentKeydown(evt) {
 }
 
 
-uploadFormInputElement.addEventListener('click', () => {
+uploadFormInputElement.addEventListener('change', () => {
   openPopup();
 });
 
