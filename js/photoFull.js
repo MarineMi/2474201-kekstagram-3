@@ -34,6 +34,14 @@ function onDocumentKeydown(evt) {
 }
 
 
+const onCloseButtonClick = function () {
+  closePopup();
+};
+
+
+photoFullCloseElement.addEventListener('click', onCloseButtonClick);
+
+
 const renderPhotoFull = function ({ url, description, likes }) {
   const photoFullPopupImgElement = photoFullPopupElement.querySelector('img');
   photoFullPopupImgElement.src = url;
@@ -52,9 +60,6 @@ const onPhotoThumbnailClick = function (evt, photo) {
   openPopup();
   photoFullCloseElement.focus();
 };
-
-
-photoFullCloseElement.addEventListener('click', closePopup);
 
 
 export { onPhotoThumbnailClick };

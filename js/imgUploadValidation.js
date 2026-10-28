@@ -10,10 +10,9 @@ const uploadFormDescriptionElement = uploadFormElement.querySelector('.text__des
 
 const pristine = new Pristine(uploadFormElement, {
   classTo: 'img-upload__field-wrapper', // Элемент, на который будут добавляться классы
-  errorClass: 'img-upload__field-wrapper--invalid', // Класс, обозначающий невалидное поле
-  successClass: 'img-upload__field-wrapper--valid', // Класс, обозначающий валидное поле
   errorTextParent: 'img-upload__field-wrapper', // Элемент, куда будет выводиться текст с ошибкой
-  errorTextClass: 'img-upload-form__error' // Класс для элемента с текстом ошибки
+  errorTextClass: 'img-upload__field-wrapper--error', // Класс для элемента с текстом ошибки
+  errorTextTag: 'div',
 });
 
 
