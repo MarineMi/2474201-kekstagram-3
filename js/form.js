@@ -19,14 +19,14 @@ const uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__can
 const submitButtonElement = uploadFormElement.querySelector('.img-upload__submit');
 
 
-const openPopup = function () {
+const openPopup = () => {
   uploadFormOverlayElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 
-const closePopup = function () {
+const closePopup = () => {
   uploadFormOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -46,6 +46,13 @@ function onDocumentKeydown(evt) {
 }
 
 
+const onInputKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.stopPropagation();
+  }
+};
+
+
 uploadFormInputElement.addEventListener('change', () => {
   openPopup();
   createFile();
@@ -57,21 +64,13 @@ uploadFormCloseElement.addEventListener('click', () => {
 });
 
 
-uploadFormHashtagsElement.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
+uploadFormHashtagsElement.addEventListener('keydown', onInputKeydown);
 
 
-uploadFormDescriptionElement.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
+uploadFormDescriptionElement.addEventListener('keydown', onInputKeydown);
 
 
-const setSubmitButtonState = function (isSending) {
+const setSubmitButtonState = (isSending) => {
   submitButtonElement.disabled = isSending;
   submitButtonElement.textContent = isSending
     ? SubmitButtonText.SENDING
@@ -79,7 +78,7 @@ const setSubmitButtonState = function (isSending) {
 };
 
 
-const setUploadFormSubmit = function (onSuccess) {
+const setUploadFormSubmit = (onSuccess) => {
   uploadFormElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
 

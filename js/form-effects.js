@@ -74,7 +74,7 @@ const effectsListElement = uploadFormElement.querySelector('.img-upload__effects
 let currentEffect = null;
 
 
-const resetFilter = function () {
+const resetFilter = () => {
   effectLevelElement.classList.add('hidden');
   uploadFormPreviewImageElement.style.filter = '';
   currentEffect = null;
@@ -98,8 +98,8 @@ noUiSlider.create(effectLevelSliderElement, {
 effectLevelSliderElement.noUiSlider.on('update', () => {
   if (currentEffect) {
     const { filter, units } = currentEffect;
-    const value = effectLevelSliderElement.noUiSlider.get();
-    effectLevelValueElement.value = Number(value);
+    const value = Number(effectLevelSliderElement.noUiSlider.get());
+    effectLevelValueElement.value = value;
     uploadFormPreviewImageElement.style.filter = `${filter}(${value}${units})`;
   }
 });

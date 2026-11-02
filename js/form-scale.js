@@ -9,8 +9,11 @@ const scaleBiggerElement = uploadFormElement.querySelector('.scale__control--big
 const scaleValueElement = uploadFormElement.querySelector('.scale__control--value');
 
 
-const changeScale = function (factor) {
-  currentScaleCount = Math.min(Math.max(currentScaleCount + SCALE_COUNT.STEP * factor, SCALE_COUNT.MIN), SCALE_COUNT.MAX);
+const changeScale = (factor) => {
+  currentScaleCount = factor === 0
+    ? SCALE_COUNT.MAX
+    : Math.min(Math.max(currentScaleCount + SCALE_COUNT.STEP * factor, SCALE_COUNT.MIN), SCALE_COUNT.MAX);
+
   scaleValueElement.value = `${currentScaleCount}%`;
   uploadFormPreviewImageElement.style.transform = `scale(${currentScaleCount / 100})`;
 };
@@ -22,9 +25,7 @@ scaleSmallerElement.addEventListener('click', () => changeScale(-1));
 scaleBiggerElement.addEventListener('click', () => changeScale(1));
 
 
-const resetScale = function () {
-  changeScale(1);
-};
+const resetScale = () => changeScale(0);
 
 
 export { resetScale };

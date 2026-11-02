@@ -21,16 +21,12 @@ const filtersFormElement = filtersElement.querySelector('.img-filters__form');
 let buttonActiveElement = filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`);
 
 
-const sortRandomly = function () {
-  return Math.random() - 0.5;
-};
+const sortRandomly = () => Math.random() - 0.5;
 
-const sortByComments = function (photoA, photoB) {
-  return photoB.comments.length - photoA.comments.length;
-};
+const sortByComments = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 
 
-const getFilteredPhotos = function () {
+const getFilteredPhotos = () => {
   switch (currentFilter) {
     case Filter.RANDOM:
       return [ ...photos ].sort(sortRandomly).slice(0, RANDOM_PHOTOS_COUNT);
@@ -64,7 +60,7 @@ filtersFormElement.addEventListener('click', (evt) => {
 });
 
 
-const initFilters = function (loadedPhotos) {
+const initFilters = (loadedPhotos) => {
   filtersElement.classList.remove('img-filters--inactive');
   photos = loadedPhotos;
 };

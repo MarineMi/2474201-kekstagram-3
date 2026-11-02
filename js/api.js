@@ -12,45 +12,39 @@ const Method = {
   POST: 'POST',
 };
 
-const SuccessText = {
+const SuccessAction = {
   [ Method.POST ]: () => showAlert('success'),
 };
 
-const ErrorText = {
+const ErrorAction = {
   [ Method.GET ]: () => showAlert('data-error'),
   [ Method.POST ]: () => showAlert('error'),
 };
 
 
-const load = function (route, method = Method.GET, body = null) {
-  return fetch(`${BASE_URL}${route}`, { method, body })
-    .then((response) =>
-      response.ok
-        ? response.json()
-        : Promise.reject(new Error(`Ошибка обработки данных: ${response.status}`))
-    )
-    .then((data) => {
-      if (SuccessText[ method ]) {
-        SuccessText[ method ]();
-      }
+const load = (route, method = Method.GET, body = null) => fetch(`${BASE_URL}${route}`, { method, body })
+  .then((response) =>
+    response.ok
+      ? response.json()
+      : Promise.reject(new Error(`Ошибка обработки данных: ${response.status}`))
+  )
+  .then((data) => {
+    if (SuccessAction[ method ]) {
+      SuccessAction[ method ]();
+    }
 
-      return data;
-    })
-    .catch((err) => {
-      ErrorText[ method ]();
-      throw err;
-    });
-};
+    return data;
+  })
+  .catch((err) => {
+    ErrorAction[ method ]();
+    throw err;
+  });
 
 
-const getData = function () {
-  return load(Route.GET_DATA);
-};
+const getData = () => load(Route.GET_DATA);
 
 
-const sendData = function (body) {
-  return load(Route.SEND_DATA, Method.POST, body);
-};
+const sendData = (body) => load(Route.SEND_DATA, Method.POST, body);
 
 
 export { getData, sendData };

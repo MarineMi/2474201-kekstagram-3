@@ -15,32 +15,28 @@ const pristine = new Pristine(uploadFormElement, {
 });
 
 
-const getHashtags = function (value) {
-  return value.trim().split(/\s+/).filter(Boolean);
-};
+const getHashtags = (value) => value.trim().split(/\s+/).filter(Boolean);
 
 
-const isHashtagValid = function (value) {
+const isHashtagValid = (value) => {
   const hashtags = getHashtags(value);
   return hashtags.every((hashtag) => HASH_TAG_PATTERN.test(hashtag));
 };
 
 
-const isHashtagCountValid = function (value) {
+const isHashtagCountValid = (value) => {
   const hashtags = getHashtags(value);
   return hashtags.length <= HASH_TAG_COUNT;
 };
 
 
-const isHashtagUnique = function (value) {
+const isHashtagUnique = (value) => {
   const hashtags = getHashtags(value).map((hashtag) => hashtag.toLowerCase());
   return new Set(hashtags).size === hashtags.length;
 };
 
 
-const isDescriptionLengthValid = function (value) {
-  return value.length <= DESCRIPTION_LENGTH;
-};
+const isDescriptionLengthValid = (value) => value.length <= DESCRIPTION_LENGTH;
 
 
 pristine.addValidator(uploadFormHashtagsElement, isHashtagValid, `Хэш-тег должен начинаться с символа #, состоять только из букв и/или цифр, длина от ${HASH_TAG_LENGTH.MIN} до ${HASH_TAG_LENGTH.MAX} символов`);
@@ -49,14 +45,10 @@ pristine.addValidator(uploadFormHashtagsElement, isHashtagUnique, 'Один и �
 pristine.addValidator(uploadFormDescriptionElement, isDescriptionLengthValid, `Максимальная длина ${DESCRIPTION_LENGTH} символов`);
 
 
-const isValid = function () {
-  return pristine.validate();
-};
+const isValid = () => pristine.validate();
 
 
-const resetValidation = function () {
-  return pristine.reset();
-};
+const resetValidation = () => pristine.reset();
 
 
 export { isValid, resetValidation };

@@ -1,31 +1,36 @@
-import { onPhotoThumbnailClick } from './photo-full.js';
+import { openPhotoFull } from './photo-full.js';
 
 
 const photoThumbnailContainerElement = document.querySelector('.pictures');
-const photoThumbnailTemplate = document.querySelector('#picture')
+const photoThumbnailTemplateElement = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
 
-const renderPhotoThumbnail = function (photo) {
+const renderPhotoThumbnail = (photo) => {
   const { url, description, likes, comments } = photo;
-  const photoThumbnailElement = photoThumbnailTemplate.cloneNode(true);
+  const photoThumbnailElement = photoThumbnailTemplateElement.cloneNode(true);
   const photoThumbnailImgElement = photoThumbnailElement.querySelector('.picture__img');
   photoThumbnailImgElement.src = url;
   photoThumbnailImgElement.alt = description;
   photoThumbnailElement.querySelector('.picture__comments').textContent = comments.length;
   photoThumbnailElement.querySelector('.picture__likes').textContent = likes;
-  photoThumbnailElement.addEventListener('click', (evt) => onPhotoThumbnailClick(evt, photo));
+
+  const onPhotoThumbnailClick = (evt) => {
+    evt.preventDefault();
+    openPhotoFull(evt.currentTarget, photo);
+  };
+  photoThumbnailElement.addEventListener('click', onPhotoThumbnailClick);
   return photoThumbnailElement;
 };
 
 
-const resetGallery = function () {
-  photoThumbnailContainerElement.querySelectorAll('.picture').forEach((el) => el.remove());
+const resetGallery = () => {
+  photoThumbnailContainerElement.querySelectorAll('.picture').forEach((photoThumbnailElement) => photoThumbnailElement.remove());
 };
 
 
-const renderGallery = function (photos) {
+const renderGallery = (photos) => {
   resetGallery();
   const fragment = document.createDocumentFragment();
   photos.forEach((photo) => fragment.append(renderPhotoThumbnail(photo)));
@@ -33,4 +38,4 @@ const renderGallery = function (photos) {
 };
 
 
-export { renderGallery};
+export { renderGallery };

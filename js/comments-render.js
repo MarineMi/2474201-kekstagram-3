@@ -2,7 +2,7 @@ import { photoFullPopupElement } from './elements.js';
 
 const COMMENT_SHOWN_STEP = 5;
 let commentsShowCount = COMMENT_SHOWN_STEP;
-let commentsCopy = [];
+let currentComments = [];
 
 
 const commentsListElement = photoFullPopupElement.querySelector('.social__comments');
@@ -12,7 +12,7 @@ const commentShowCountElement = photoFullPopupElement.querySelector('.social__co
 const commentsLoadMoreButtonElement = photoFullPopupElement.querySelector('.comments-loader');
 
 
-const renderComment = function ({ avatar, name, message }) {
+const renderComment = ({ avatar, name, message }) => {
   const commentElement = commentTemplateElement.cloneNode(true);
   const commentImgElement = commentElement.querySelector('.social__picture');
   commentImgElement.src = avatar;
@@ -22,33 +22,33 @@ const renderComment = function ({ avatar, name, message }) {
 };
 
 
-const renderComments = function (comments, reset = false) {
+const renderComments = (comments, reset = false) => {
   if (reset) {
     commentsShowCount = COMMENT_SHOWN_STEP;
-    commentsCopy = comments.slice();
+    currentComments = comments.slice();
     commentsListElement.innerHTML = '';
   }
 
   const fragment = document.createDocumentFragment();
 
-  const startIndex = reset ? 0 : commentsShowCount - COMMENT_SHOWN_STEP;
+  const startIndex = commentsShowCount - COMMENT_SHOWN_STEP;
 
-  commentsCopy
+  currentComments
     .slice(startIndex, commentsShowCount)
     .forEach((comment) => fragment.appendChild(renderComment(comment)));
 
   commentsListElement.appendChild(fragment);
 
-  commentTotalCountElement.textContent = commentsCopy.length;
-  commentShowCountElement.textContent = Math.min(commentsShowCount, commentsCopy.length);
+  commentTotalCountElement.textContent = currentComments.length;
+  commentShowCountElement.textContent = Math.min(commentsShowCount, currentComments.length);
 
-  commentsLoadMoreButtonElement.classList.toggle('hidden', commentsShowCount >= commentsCopy.length);
+  commentsLoadMoreButtonElement.classList.toggle('hidden', commentsShowCount >= currentComments.length);
 };
 
 
 commentsLoadMoreButtonElement.addEventListener('click', () => {
   commentsShowCount += COMMENT_SHOWN_STEP;
-  renderComments(commentsCopy, false);
+  renderComments(currentComments, false);
 });
 
 

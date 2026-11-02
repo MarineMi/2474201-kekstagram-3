@@ -2,12 +2,10 @@ const ALERT_SHOW_TIME = 5000;
 const TIMEOUT_DELAY = 500;
 
 
-const isEscapeKey = function (evt) {
-  return (evt.key === 'Escape');
-};
+const isEscapeKey = (evt) => (evt.key === 'Escape');
 
 
-const removeAlert = function (element, timeoutId, onKeydown, onClick) {
+const removeAlert = (element, timeoutId, onKeydown, onClick) => {
   element.remove();
   document.removeEventListener('keydown', onKeydown, true);
   document.removeEventListener('click', onClick);
@@ -15,7 +13,7 @@ const removeAlert = function (element, timeoutId, onKeydown, onClick) {
 };
 
 
-const showAlert = function (message) {
+const showAlert = (message) => {
   const alertTemplateElement = document.querySelector(`#${message}`)
     .content
     .querySelector(`.${message}`);
@@ -51,7 +49,7 @@ const showAlert = function (message) {
 };
 
 
-const debounce = function (callback, timeoutDelay = TIMEOUT_DELAY) {
+const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;

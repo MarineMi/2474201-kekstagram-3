@@ -11,14 +11,14 @@ const photoFullLikesElement = photoFullPopupElement.querySelector('.likes-count'
 const photoFullDescriptionElement = photoFullPopupElement.querySelector('.social__caption');
 
 
-const openPopup = function () {
+const openPopup = () => {
   photoFullPopupElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
 
-const closePopup = function () {
+const closePopup = () => {
   photoFullPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -35,7 +35,7 @@ function onDocumentKeydown(evt) {
 }
 
 
-const onCloseButtonClick = function () {
+const onCloseButtonClick = () => {
   closePopup();
 };
 
@@ -43,7 +43,7 @@ const onCloseButtonClick = function () {
 photoFullCloseElement.addEventListener('click', onCloseButtonClick);
 
 
-const renderPhotoFull = function ({ url, description, likes }) {
+const renderPhotoFull = ({ url, description, likes }) => {
   photoFullImgElement.src = url;
   photoFullImgElement.alt = description;
   photoFullLikesElement.textContent = likes;
@@ -51,10 +51,9 @@ const renderPhotoFull = function ({ url, description, likes }) {
 };
 
 
-const onPhotoThumbnailClick = function (evt, photo) {
-  evt.preventDefault();
+const openPhotoFull = (currentTarget, photo) => {
   const { comments } = photo;
-  lastFocusedElement = evt.currentTarget;
+  lastFocusedElement = currentTarget;
   renderPhotoFull(photo);
   renderComments(comments, true);
   openPopup();
@@ -63,5 +62,5 @@ const onPhotoThumbnailClick = function (evt, photo) {
 
 
 export {
-  onPhotoThumbnailClick
+  openPhotoFull
 };
