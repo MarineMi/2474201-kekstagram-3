@@ -1,10 +1,12 @@
+import { uploadFormElement, uploadFormPreviewImageElement } from './elements.js';
+import { uploadFormInputElement} from './form.js';
+
+
 const FILE_TYPES = [ 'jpg', 'jpeg', 'png' ];
 
 let previewUrl = null;
 
-const uploadFormElement = document.querySelector('.img-upload__form');
-const uploadFormInputElement = uploadFormElement.querySelector('.img-upload__input');
-const uploadFormPreviewImageElement = uploadFormElement.querySelector('.img-upload__preview img');
+
 const defaultPreviewSrc = uploadFormPreviewImageElement.getAttribute('src');
 const effectsPreviewElements = uploadFormElement.querySelectorAll('.effects__preview');
 
@@ -12,12 +14,9 @@ const effectsPreviewElements = uploadFormElement.querySelectorAll('.effects__pre
 const createFile = function () {
   const file = uploadFormInputElement.files[ 0 ];
   const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+  const matches = FILE_TYPES.some((typeName) => fileName.endsWith(typeName));
 
   if (matches) {
-    if (previewUrl) {
-      URL.revokeObjectURL(previewUrl);
-    }
     previewUrl = URL.createObjectURL(file);
     uploadFormPreviewImageElement.src = previewUrl;
 
@@ -28,7 +27,7 @@ const createFile = function () {
 };
 
 
-const resetFile = () => {
+const resetFile = function () {
   if (previewUrl) {
     URL.revokeObjectURL(previewUrl);
     previewUrl = null;

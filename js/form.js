@@ -1,9 +1,10 @@
+import { uploadFormElement, uploadFormHashtagsElement, uploadFormDescriptionElement } from './elements.js';
 import { sendData } from './api.js';
 import { isEscapeKey } from './utils.js';
-import { isValid, resetValidation } from './imgUploadValidation.js';
-import { resetScale } from './imgUploadScale.js';
-import { resetFilter } from './imgUploadEffects.js';
-import { createFile, resetFile } from './imgUploadPreview.js';
+import { isValid, resetValidation } from './form-validation.js';
+import { resetScale } from './form-scale.js';
+import { resetFilter } from './form-effects.js';
+import { createFile, resetFile } from './form-preview.js';
 
 
 const SubmitButtonText = {
@@ -12,12 +13,9 @@ const SubmitButtonText = {
 };
 
 
-const uploadFormElement = document.querySelector('.img-upload__form');
 const uploadFormInputElement = uploadFormElement.querySelector('.img-upload__input');
 const uploadFormOverlayElement = uploadFormElement.querySelector('.img-upload__overlay');
 const uploadFormCloseElement = uploadFormElement.querySelector('.img-upload__cancel');
-const uploadFormHashtagsElement = uploadFormElement.querySelector('.text__hashtags');
-const uploadFormDescriptionElement = uploadFormElement.querySelector('.text__description');
 const submitButtonElement = uploadFormElement.querySelector('.img-upload__submit');
 
 
@@ -32,9 +30,7 @@ const closePopup = function () {
   uploadFormOverlayElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-  uploadFormInputElement.value = '';
-  uploadFormHashtagsElement.value = '';
-  uploadFormDescriptionElement.value = '';
+  uploadFormElement.reset();
   resetValidation();
   resetScale();
   resetFilter();
@@ -75,15 +71,11 @@ uploadFormDescriptionElement.addEventListener('keydown', (evt) => {
 });
 
 
-const blockSubmitButton = function () {
-  submitButtonElement.disabled = true;
-  submitButtonElement.textContent = SubmitButtonText.SENDING;
-};
-
-
-const unblockSubmitButton = function () {
-  submitButtonElement.disabled = false;
-  submitButtonElement.textContent = SubmitButtonText.IDLE;
+const setSubmitButtonState = function (isSending) {
+  submitButtonElement.disabled = isSending;
+  submitButtonElement.textContent = isSending
+    ? SubmitButtonText.SENDING
+    : SubmitButtonText.IDLE;
 };
 
 
@@ -92,14 +84,18 @@ const setUploadFormSubmit = function (onSuccess) {
     evt.preventDefault();
 
     if (isValid()) {
-      blockSubmitButton();
+      setSubmitButtonState(true);
 
       sendData(new FormData(evt.target))
         .then(onSuccess)
         .catch(() => { })
-        .finally(unblockSubmitButton);
+        .finally(() => setSubmitButtonState(false));
     }
   });
 };
 
-export { setUploadFormSubmit, closePopup };
+export {
+  uploadFormInputElement,
+  setUploadFormSubmit,
+  closePopup
+};

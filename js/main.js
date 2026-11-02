@@ -1,9 +1,9 @@
 import { getData } from './api.js';
-import { renderGallery } from './photoThumbnails.js';
-import { setUploadFormSubmit, closePopup } from './imgUploadForm.js';
-import './imgUploadScale.js';
-import './imgUploadEffects.js';
-import { initFilters } from './photoFilters.js';
+import { renderGallery } from './photo-thumbnails-render.js';
+import { setUploadFormSubmit, closePopup } from './form.js';
+import './form-scale.js';
+import './form-effects.js';
+import { initFilters } from './photo-filters.js';
 
 
 getData()

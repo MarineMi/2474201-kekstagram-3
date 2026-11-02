@@ -1,3 +1,6 @@
+import { uploadFormElement, uploadFormPreviewImageElement } from './elements.js';
+
+
 const EFFECTS = {
   chrome: {
     filter: 'grayscale',
@@ -62,22 +65,21 @@ const EFFECTS = {
 };
 
 
-const uploadFormElement = document.querySelector('.img-upload__form');
-const uploadFormPreviewElement = uploadFormElement.querySelector('.img-upload__preview');
 const effectLevelElement = uploadFormElement.querySelector('.img-upload__effect-level');
 const effectLevelValueElement = effectLevelElement.querySelector('.effect-level__value');
 const effectLevelSliderElement = effectLevelElement.querySelector('.effect-level__slider');
 const effectsListElement = uploadFormElement.querySelector('.img-upload__effects');
 
 
-let currentEffect;
+let currentEffect = null;
+
 
 const resetFilter = function () {
   effectLevelElement.classList.add('hidden');
-  uploadFormPreviewElement.style.filter = '';
-  effectLevelValueElement.value = '';
+  uploadFormPreviewImageElement.style.filter = '';
   currentEffect = null;
 };
+
 
 resetFilter();
 
@@ -97,8 +99,8 @@ effectLevelSliderElement.noUiSlider.on('update', () => {
   if (currentEffect) {
     const { filter, units } = currentEffect;
     const value = effectLevelSliderElement.noUiSlider.get();
-    effectLevelValueElement.value = value;
-    uploadFormPreviewElement.style.filter = `${filter}(${value}${units})`;
+    effectLevelValueElement.value = Number(value);
+    uploadFormPreviewImageElement.style.filter = `${filter}(${value}${units})`;
   }
 });
 

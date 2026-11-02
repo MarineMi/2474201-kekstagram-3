@@ -1,10 +1,14 @@
-import { renderComments } from './commentsRender.js';
+import { photoFullPopupElement } from './elements.js';
+import { renderComments } from './comments-render.js';
 import { isEscapeKey } from './utils.js';
 
 
 let lastFocusedElement = null;
-const photoFullPopupElement = document.querySelector('.big-picture');
+
 const photoFullCloseElement = photoFullPopupElement.querySelector('.big-picture__cancel');
+const photoFullImgElement = photoFullPopupElement.querySelector('img');
+const photoFullLikesElement = photoFullPopupElement.querySelector('.likes-count');
+const photoFullDescriptionElement = photoFullPopupElement.querySelector('.social__caption');
 
 
 const openPopup = function () {
@@ -18,11 +22,8 @@ const closePopup = function () {
   photoFullPopupElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-
-  if (lastFocusedElement) {
-    lastFocusedElement.focus();
-    lastFocusedElement = null;
-  }
+  lastFocusedElement.focus();
+  lastFocusedElement = null;
 };
 
 
@@ -43,11 +44,10 @@ photoFullCloseElement.addEventListener('click', onCloseButtonClick);
 
 
 const renderPhotoFull = function ({ url, description, likes }) {
-  const photoFullPopupImgElement = photoFullPopupElement.querySelector('img');
-  photoFullPopupImgElement.src = url;
-  photoFullPopupImgElement.alt = description;
-  photoFullPopupElement.querySelector('.likes-count').textContent = likes;
-  photoFullPopupElement.querySelector('.social__caption').textContent = description;
+  photoFullImgElement.src = url;
+  photoFullImgElement.alt = description;
+  photoFullLikesElement.textContent = likes;
+  photoFullDescriptionElement.textContent = description;
 };
 
 
@@ -62,4 +62,6 @@ const onPhotoThumbnailClick = function (evt, photo) {
 };
 
 
-export { onPhotoThumbnailClick };
+export {
+  onPhotoThumbnailClick
+};

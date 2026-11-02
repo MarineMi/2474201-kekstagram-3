@@ -1,4 +1,4 @@
-import { renderGallery } from './photoThumbnails.js';
+import { renderGallery } from './photo-thumbnails-render.js';
 import { debounce } from './utils.js';
 
 
@@ -18,6 +18,7 @@ let photos = [];
 
 const filtersElement = document.querySelector('.img-filters');
 const filtersFormElement = filtersElement.querySelector('.img-filters__form');
+let buttonActiveElement = filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`);
 
 
 const sortRandomly = function () {
@@ -27,6 +28,7 @@ const sortRandomly = function () {
 const sortByComments = function (photoA, photoB) {
   return photoB.comments.length - photoA.comments.length;
 };
+
 
 const getFilteredPhotos = function () {
   switch (currentFilter) {
@@ -47,7 +49,6 @@ const rerenderGallery = debounce((filtered) => renderGallery(filtered), RERENDER
 
 filtersFormElement.addEventListener('click', (evt) => {
   const buttonClickElement = evt.target.closest('.img-filters__button');
-  const buttonActiveElement = filtersFormElement.querySelector(`.${ACTIVE_BUTTON_CLASS}`);
 
   if (!buttonClickElement || (buttonClickElement === buttonActiveElement)) {
     return;
@@ -55,6 +56,7 @@ filtersFormElement.addEventListener('click', (evt) => {
 
   buttonActiveElement.classList.remove(ACTIVE_BUTTON_CLASS);
   buttonClickElement.classList.add(ACTIVE_BUTTON_CLASS);
+  buttonActiveElement = buttonClickElement;
   currentFilter = buttonClickElement.id;
 
   const filteredPhotos = getFilteredPhotos();
@@ -62,7 +64,7 @@ filtersFormElement.addEventListener('click', (evt) => {
 });
 
 
-const initFilters = (loadedPhotos) => {
+const initFilters = function (loadedPhotos) {
   filtersElement.classList.remove('img-filters--inactive');
   photos = loadedPhotos;
 };

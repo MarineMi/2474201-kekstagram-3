@@ -1,4 +1,4 @@
-import { onPhotoThumbnailClick } from './photoFull.js';
+import { onPhotoThumbnailClick } from './photo-full.js';
 
 
 const photoThumbnailContainerElement = document.querySelector('.pictures');

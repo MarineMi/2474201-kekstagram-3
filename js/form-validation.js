@@ -1,11 +1,10 @@
+import { uploadFormElement, uploadFormHashtagsElement, uploadFormDescriptionElement } from './elements.js';
+
+
 const HASH_TAG_LENGTH = { MIN: 2, MAX: 20 };
 const HASH_TAG_PATTERN = new RegExp(`^#[a-zа-яё\\d]{${HASH_TAG_LENGTH.MIN - 1},${HASH_TAG_LENGTH.MAX - 1}}$`, 'i');
 const HASH_TAG_COUNT = 5;
 const DESCRIPTION_LENGTH = 140;
-
-const uploadFormElement = document.querySelector('.img-upload__form');
-const uploadFormHashtagsElement = uploadFormElement.querySelector('.text__hashtags');
-const uploadFormDescriptionElement = uploadFormElement.querySelector('.text__description');
 
 
 const pristine = new Pristine(uploadFormElement, {

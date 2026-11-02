@@ -1,35 +1,17 @@
 const ALERT_SHOW_TIME = 5000;
-
-
-const getRandomInteger = function (a, b) {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
-};
-
-
-const createId = function () {
-  let previousValues = 1;
-
-  return function () {
-    return previousValues++;
-  };
-};
-
-
-const getRandomArrayElement = function (elements, count = 1) {
-  let randomElements = '';
-
-  for (let i = 0; i < count; i++) {
-    randomElements += `${elements[ getRandomInteger(0, elements.length - 1) ]} `;
-  }
-  return randomElements.trimEnd();
-};
+const TIMEOUT_DELAY = 500;
 
 
 const isEscapeKey = function (evt) {
   return (evt.key === 'Escape');
+};
+
+
+const removeAlert = function (element, timeoutId, onKeydown, onClick) {
+  element.remove();
+  document.removeEventListener('keydown', onKeydown, true);
+  document.removeEventListener('click', onClick);
+  clearTimeout(timeoutId);
 };
 
 
@@ -40,44 +22,36 @@ const showAlert = function (message) {
   const alertElement = alertTemplateElement.cloneNode(true);
   document.body.append(alertElement);
 
+  const timeoutAlert = setTimeout(() => removeAlert(alertElement, timeoutAlert, onDocumentKeydown, onDocumentClick), ALERT_SHOW_TIME);
+
   const closeButtonElement = alertElement.querySelector(`.${message}__button`);
   if (closeButtonElement) {
     closeButtonElement.addEventListener('click', () => {
-      removeAlert();
+      removeAlert(alertElement, timeoutAlert, onDocumentKeydown, onDocumentClick);
     });
   }
 
   document.addEventListener('keydown', onDocumentKeydown, true);
   document.addEventListener('click', onDocumentClick);
 
-  const timeoutId = setTimeout(removeAlert, ALERT_SHOW_TIME);
-
-
-  function removeAlert() {
-    alertElement.remove();
-    document.removeEventListener('keydown', onDocumentKeydown, true);
-    document.removeEventListener('click', onDocumentClick);
-    clearTimeout(timeoutId);
-  }
-
   function onDocumentKeydown(evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       evt.stopPropagation();
-      removeAlert();
+      removeAlert(alertElement, timeoutAlert, onDocumentKeydown, onDocumentClick);
     }
   }
 
   function onDocumentClick(evt) {
     const isOutside = !evt.target.closest(`.${message}__inner`);
-    if (closeButtonElement && isOutside) {
-      removeAlert();
+    if (isOutside) {
+      removeAlert(alertElement, timeoutAlert, onDocumentKeydown, onDocumentClick);
     }
   }
 };
 
 
-function debounce(callback, timeoutDelay = 500) {
+const debounce = function (callback, timeoutDelay = TIMEOUT_DELAY) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
@@ -93,13 +67,10 @@ function debounce(callback, timeoutDelay = 500) {
     // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
     // пока действие совершается чаще, чем переданная задержка timeoutDelay
   };
-}
+};
 
 
 export {
-  getRandomInteger,
-  createId,
-  getRandomArrayElement,
   isEscapeKey,
   showAlert,
   debounce
