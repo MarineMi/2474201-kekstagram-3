@@ -15,14 +15,16 @@ const createFile = () => {
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((typeName) => fileName.endsWith(typeName));
 
-  if (matches) {
-    previewImageUrl = URL.createObjectURL(file);
-    uploadFormPreviewImageElement.src = previewImageUrl;
-
-    effectsPreviewElements.forEach((effectsPreviewElement) => {
-      effectsPreviewElement.style.backgroundImage = `url(${previewImageUrl})`;
-    });
+  if (!matches) {
+    return;
   }
+
+  previewImageUrl = URL.createObjectURL(file);
+  uploadFormPreviewImageElement.src = previewImageUrl;
+
+  effectsPreviewElements.forEach((effectsPreviewElement) => {
+    effectsPreviewElement.style.backgroundImage = `url(${previewImageUrl})`;
+  });
 };
 
 

@@ -106,21 +106,17 @@ effectLevelSliderElement.noUiSlider.on('update', () => {
 
 
 effectsListElement.addEventListener('change', (evt) => {
-  if (!evt.target.matches('input[name="effect"]')) {
+  if (evt.target.value === 'none') {
+    resetFilter();
     return;
   }
 
-  if (evt.target.value !== 'none') {
-    currentEffect = EFFECTS[ evt.target.value ];
-    const { sliderOptions } = currentEffect;
+  currentEffect = EFFECTS[ evt.target.value ];
+  const { sliderOptions } = currentEffect;
 
-    effectLevelSliderElement.noUiSlider.updateOptions(sliderOptions);
-    effectLevelSliderElement.noUiSlider.set(sliderOptions.start);
-    effectLevelElement.classList.remove('hidden');
-
-  } else {
-    resetFilter();
-  }
+  effectLevelSliderElement.noUiSlider.updateOptions(sliderOptions);
+  effectLevelSliderElement.noUiSlider.set(sliderOptions.start);
+  effectLevelElement.classList.remove('hidden');
 });
 
 
